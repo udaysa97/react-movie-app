@@ -2,17 +2,22 @@ import React from 'react';
 import Navbar from './Navbar'
 import MovieCard from './MovieCard'
 import {data} from '../data';
+import {addMovies} from '../actions/index'
 
 class App extends React.Component {
   componentDidMount(){
-    this.props.store.dispatch({
-      type:'ADD_MOVIES',
-      movies: data
-    });
+    const {store} = this.props;
+    store.subscribe(()=>{
+      console.log('updated');
+     this.forceUpdate(); // should not use . Doing it now as serves purpose
+    })
+    store.dispatch(addMovies(data));
+    //console.log('store',store);
     console.log('STATE',this.props.store.getState());
   }
   render() {
     const movies = this.props.store.getState();
+    console.log('RENDER');
     return (
       <div className="App">
         <Navbar />
